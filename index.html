@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community Services Map (Geocoded)</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
+  <link rel="stylesheet" href="./assets/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Community Services Map</h1>
+    <div class="controls">
+      <input id="searchBox" type="search" placeholder="Search by name…" />
+      <button id="resetBtn" title="Reset filters/search">Reset</button>
+      <button id="exportBtn" title="Download filtered GeoJSON">Export</button>
+    </div>
+    <div id="status"></div>
+  </header>
+  <main>
+    <aside id="filters">
+      <label for="zipBox">Filter by zip code:</label>
+      <input type="text" id="zipBox" placeholder="e.g. 13902" />
+      <h3>Filter by Type</h3>
+      <div id="typeFilters"></div>
+      <p class="hint">Data is already geocoded and loaded from <code>assets/data.geocoded.json</code>.</p>
+    </aside>
+    <div id="map"></div>
+  </main>
+  <footer>
+    <small>Built with Leaflet & OpenStreetMap.</small>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script type="module" src="./assets/script.js"></script>
+</body>
+</html>
