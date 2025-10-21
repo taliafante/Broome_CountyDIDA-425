@@ -4,11 +4,152 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Community Services Map (Geocoded)</title>
+
+  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="./assets/style.css" />
+
+  <!-- Custom Styles -->
+  <style>
+    /* General layout */
+    body {
+      margin: 0;
+      font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+      color: #333;
+      background-color: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      background-color: #2b6777;
+      color: #fff;
+      padding: 1rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    input[type="search"], input[type="text"] {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      width: 200px;
+    }
+
+    button {
+      background-color: #52ab98;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #3e8b79;
+    }
+
+    #status {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    main {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Sidebar styling */
+    aside#filters {
+      width: 280px;
+      background-color: #fff;
+      border-right: 1px solid #ddd;
+      padding: 1.5rem;
+      overflow-y: auto;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    }
+
+    aside h3 {
+      margin-top: 1.2rem;
+      font-size: 1.1rem;
+      color: #2b6777;
+    }
+
+    aside label {
+      font-weight: 500;
+    }
+
+    aside input {
+      width: 100%;
+      margin-top: 0.4rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    /* Map styling */
+    #map {
+      flex: 1;
+      height: 100%;
+    }
+
+    footer {
+      background-color: #2b6777;
+      color: #fff;
+      text-align: center;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive layout */
+    @media (max-width: 768px) {
+      main {
+        flex-direction: column;
+      }
+
+      aside#filters {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+        box-shadow: none;
+      }
+
+      .controls {
+        flex-direction: column;
+        gap: 0.4rem;
+      }
+
+      input[type="search"] {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
+
 <body>
   <header>
     <h1>Community Services Map</h1>
@@ -19,20 +160,26 @@
     </div>
     <div id="status"></div>
   </header>
+
   <main>
     <aside id="filters">
       <label for="zipBox">Filter by zip code:</label>
       <input type="text" id="zipBox" placeholder="e.g. 13902" />
       <h3>Filter by Type</h3>
       <div id="typeFilters"></div>
-      <p class="hint">Data is already geocoded and loaded from <code>assets/data.geocoded.json</code>.</p>
+      <p class="hint">
+        Data is already geocoded and loaded from <code>assets/data.geocoded.json</code>.
+      </p>
     </aside>
+
     <div id="map"></div>
   </main>
+
   <footer>
     <small>Built with Leaflet & OpenStreetMap.</small>
   </footer>
 
+  <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script type="module" src="./assets/script.js"></script>
