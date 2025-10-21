@@ -26,11 +26,7 @@
     header {
       background-color: #2b6777;
       color: #fff;
-      padding: 1rem 2rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 1rem 2rem;;
     }
 
     header h1 {
@@ -61,8 +57,6 @@
       border-radius: 8px;
       padding: 0.5rem 1rem;
       cursor: pointer;
-      font-weight: 500;
-      transition: background 0.2s ease;
     }
 
     button:hover {
@@ -75,9 +69,7 @@
     }
 
     main {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
+      display: flex;;
     }
 
     /* Sidebar styling */
@@ -85,9 +77,7 @@
       width: 280px;
       background-color: #fff;
       border-right: 1px solid #ddd;
-      padding: 1.5rem;
-      overflow-y: auto;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+      padding: 1.5rem;;
     }
 
     aside h3 {
@@ -125,28 +115,6 @@
       font-size: 0.9rem;
     }
 
-    /* Responsive layout */
-    @media (max-width: 768px) {
-      main {
-        flex-direction: column;
-      }
-
-      aside#filters {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid #ddd;
-        box-shadow: none;
-      }
-
-      .controls {
-        flex-direction: column;
-        gap: 0.4rem;
-      }
-
-      input[type="search"] {
-        width: 100%;
-      }
-    }
   </style>
 </head>
 
