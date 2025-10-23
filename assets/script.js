@@ -127,13 +127,78 @@ function filterRows(rows) {
     TYPE_FILTERS.appendChild(label);
   });
 
-  // Initialize Leaflet map + cluster group
+  // Initialize Leaflet map
   const map = L.map('map').setView(DEFAULT_COORDS, DEFAULT_ZOOM);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+
+  // Base map
+  const baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
+
+  // Marker cluster
   const cluster = L.markerClusterGroup().addTo(map);
+
+  // Rain overlay (toggleable)
+  const rainLayer = L.tileLayer(
+    'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=dfc6b59b27674760d475b6984af8a621',
+    { attribution: '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>', opacity: 0.8 }
+  );
+
+  // Layer control
+  L.control.layers({ "OpenStreetMap": baseMap }, { "Rain": rainLayer }, { collapsed: false }).addTo(map);
+
+  // Weather control (top-right)
+  const weatherControl = L.control({ position: 'topright' });
+  weatherControl.onAdd = function () {
+    const div = L.DomUtil.create('div', 'weather-box');
+    div.style.background = 'white';
+    div.style.padding = '6px 10px';
+    div.style.borderRadius = '8px';
+    div.style.boxShadow = '0 1px 4px rgba(0,0,0,0.3)';
+    div.style.fontSize = '13px';
+    div.innerHTML = 'Loading weather...';
+    return div;
+  };
+  weatherControl.addTo(map);
+
+  // --- WEATHER FORECAST FUNCTION ---
+  async function fetchForecast(lat, lon) {
+    const weatherDiv = document.querySelector('.weather-box');
+    try {
+      const pointResp = await fetch(`https://api.weather.gov/points/${lat},${lon}`, {
+        headers: { 'User-Agent': 'my-map-app (email@example.com)' }
+      });
+      if (!pointResp.ok) throw new Error('Failed to fetch grid point');
+      const pointData = await pointResp.json();
+
+      const forecastURL = pointData.properties.forecast;
+      if (!forecastURL) throw new Error('No forecast URL found');
+
+      const forecastResp = await fetch(forecastURL, {
+        headers: { 'User-Agent': 'my-map-app (email@example.com)' }
+      });
+      if (!forecastResp.ok) throw new Error('Failed to fetch forecast');
+      const forecastData = await forecastResp.json();
+
+      const current = forecastData.properties.periods[0];
+      console.log('Current forecast:', current);
+
+      // Update the weather control box
+      weatherDiv.innerHTML = `${current.shortForecast}, ${current.temperature}°${current.temperatureUnit}`;
+    } catch (err) {
+      console.error('Weather forecast error:', err);
+      weatherDiv.innerHTML = 'Unable to load weather';
+    }
+  }
+
+  // Load forecast for default location by click
+  map.on('click', e => {
+    fetchForecast(e.latlng.lat, e.latlng.lng);
+  });
+
+
+
 
   // Refresh marker display
   function refreshMarkers() {
