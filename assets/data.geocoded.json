@@ -846,7 +846,7 @@
     "longitude": -75.8909545
   },
     {
-    "Type": "School- pantry",
+    "Type": "School- Pantry",
     "Name": "Traci Cares-Ben Franklin elementary",
     "Street": "262 Conklin Ave",
     "City": "Binghamton",
@@ -882,7 +882,7 @@
     "longitude": -75.9190909
   },
    {
-    "Type": "School- pantry",
+    "Type": "School- Pantry",
     "Name": "Binghamton High School",
     "Street": "31 Main St. Binghamton",
     "City": "Binghamton",
@@ -918,7 +918,7 @@
     "longitude": -75.9035712
   },
     {
-    "Type": "School- pantry",
+    "Type": "School- Pantry",
     "Name": "BOCES East Learning Center",
     "Street": "164 Hawley St., Binghamton",
     "City": "Binghamton",
@@ -954,7 +954,7 @@
     "longitude": -75.9318236
   },
     {
-    "Type": "School- pantry",
+    "Type": "School- Pantry",
     "Name": "BT BOCES - Simply Pawsitive",
     "Street": "435 Glenwood Rd",
     "City": "Binghamton",
@@ -1350,7 +1350,7 @@
     "longitude": null
   },
     {
-    "Type": "School- pantry",
+    "Type": "School- Pantry",
     "Name": "Deposit School Food Center",
     "Street": "171 Second St.",
     "City": "Deposit",
@@ -1404,7 +1404,7 @@
     "longitude": -76.0507646
   },
     {
-    "Type": "School- pantry",
+    "Type": "School- Pantry",
     "Name": "Family Support Center - UE schools district office",
     "Street": "1100 E Main St",
     "City": "Endicott",
@@ -1602,7 +1602,7 @@
     "longitude": null
   },
     {
-    "Type": "School- pantry",
+    "Type": "School- Pantry",
     "Name": "Wildcat Food and Clothing Center - JSHS",
     "Street": "666 Reynolds St",
     "City": "Johnson City",
@@ -1710,7 +1710,7 @@
     "longitude": -76.0458193
   },
     {
-    "Type": "School- pantry",
+    "Type": "School- Pantry",
     "Name": "Vestal Food Pantry-Vestal High School",
     "Street": "205 Woodlawn Dr",
     "City": "Vestal",
@@ -1836,7 +1836,7 @@
     "longitude": -75.8724186
   },
     {
-    "Type": "School- pantry",
+    "Type": "School- Pantry",
     "Name": "Chenango Valley School",
     "Street": "221 Chenango Bridge Rd",
     "City": "Binghamton",
@@ -1908,7 +1908,7 @@
     "longitude": null
   },
     {
-    "Type": "School- pantry",
+    "Type": "School- Pantry",
     "Name": "Susquehanna Valley School",
     "Street": "1168 Conklin Ave.",
     "City": "Conklin",
@@ -2070,7 +2070,7 @@
     "longitude": null
   },
     {
-    "Type": "School- pantry",
+    "Type": "School- Pantry",
     "Name": "Whitney Point",
     "Street": "TRA School, 2887 Route 11,",
     "City": "Whitney Point",
@@ -2790,24 +2790,6 @@
     "longitude": null
   },
   {
-    "Type": "",
-    "Name": "",
-    "Street": "",
-    "City": "",
-    "State": "NAN",
-    "Zip": "nan",
-    "Hours of Operation": "Hours of Operation",
-    "Area Served": "Call for Reservations",
-    "Deliveries?": "Meal Provided",
-    "Additional Services Offered": "Cost",
-    "Drive Thru?": "",
-    "Contact": "",
-    "Phone": "",
-    "Email": "",
-    "latitude": 18.7778874,
-    "longitude": 100.773732
-  },
-  {
     "Type": "Senior Centers",
     "Name": "Eastern Broome",
     "Street": "27 Golden Ln.",
@@ -2950,185 +2932,5 @@
     "Email": "",
     "latitude": 42.166724,
     "longitude": -75.8647796
-  },
-  {
-    "Type": "",
-    "Name": "",
-    "Street": "",
-    "City": "",
-    "State": "NAN",
-    "Zip": "nan",
-    "Hours of Operation": "",
-    "Area Served": "",
-    "Deliveries?": "",
-    "Additional Services Offered": "",
-    "Drive Thru?": "",
-    "Contact": "Lori Wheeler",
-    "Phone": "607-467-5507",
-    "Email": "lwheeler@deposit.stier.org",
-    "latitude": 18.7778874,
-    "longitude": 100.773732
-  },
-  {
-    "Type": "",
-    "Name": "",
-    "Street": "",
-    "City": "",
-    "State": "NAN",
-    "Zip": "nan",
-    "Hours of Operation": "",
-    "Area Served": "",
-    "Deliveries?": "",
-    "Additional Services Offered": "",
-    "Drive Thru?": "",
-    "Contact": "Norene Tasbar",
-    "Phone": "607-693-8126",
-    "Email": "ntasber@btboces.org",
-    "latitude": 18.7778874,
-    "longitude": 100.773732
-  },
-  {
-    "Type": "",
-    "Name": "",
-    "Street": "",
-    "City": "",
-    "State": "NAN",
-    "Zip": "nan",
-    "Hours of Operation": "",
-    "Area Served": "",
-    "Deliveries?": "",
-    "Additional Services Offered": "",
-    "Drive Thru?": "",
-    "Contact": "Jessica Brown",
-    "Phone": "607-786-8211",
-    "Email": "jbrown@btboces.org",
-    "latitude": 18.7778874,
-    "longitude": 100.773732
-  },
-  {
-    "Type": "",
-    "Name": "",
-    "Street": "",
-    "City": "",
-    "State": "NAN",
-    "Zip": "nan",
-    "Hours of Operation": "",
-    "Area Served": "",
-    "Deliveries?": "",
-    "Additional Services Offered": "",
-    "Drive Thru?": "",
-    "Contact": "Christa Munley",
-    "Phone": "607-621-7542",
-    "Email": "mainerecreation@gmail.com",
-    "latitude": 18.7778874,
-    "longitude": 100.773732
-  },
-  {
-    "Type": "",
-    "Name": "",
-    "Street": "",
-    "City": "",
-    "State": "NAN",
-    "Zip": "nan",
-    "Hours of Operation": "",
-    "Area Served": "",
-    "Deliveries?": "",
-    "Additional Services Offered": "",
-    "Drive Thru?": "",
-    "Contact": "Chris Hinkey",
-    "Phone": "607-221-3536",
-    "Email": "chinkey@townofunion.com",
-    "latitude": 18.7778874,
-    "longitude": 100.773732
-  },
-  {
-    "Type": "",
-    "Name": "",
-    "Street": "",
-    "City": "",
-    "State": "NAN",
-    "Zip": "nan",
-    "Hours of Operation": "",
-    "Area Served": "",
-    "Deliveries?": "",
-    "Additional Services Offered": "",
-    "Drive Thru?": "",
-    "Contact": "C Vakili",
-    "Phone": "607-748-3334",
-    "Email": "cvakili@abcchildcare.us",
-    "latitude": 18.7778874,
-    "longitude": 100.773732
-  },
-  {
-    "Type": "",
-    "Name": "",
-    "Street": "",
-    "City": "",
-    "State": "NAN",
-    "Zip": "nan",
-    "Hours of Operation": "",
-    "Area Served": "",
-    "Deliveries?": "",
-    "Additional Services Offered": "",
-    "Drive Thru?": "",
-    "Contact": "Nicole Golden Thomas",
-    "Phone": "607-349-7242",
-    "Email": "ngoldenthomas@chowc.org",
-    "latitude": 18.7778874,
-    "longitude": 100.773732
-  },
-  {
-    "Type": "",
-    "Name": "",
-    "Street": "",
-    "City": "",
-    "State": "NAN",
-    "Zip": "nan",
-    "Hours of Operation": "",
-    "Area Served": "",
-    "Deliveries?": "",
-    "Additional Services Offered": "",
-    "Drive Thru?": "",
-    "Contact": "Robin Gorman",
-    "Phone": "607-748-5184",
-    "Email": "tlcorbin@stny.rr.com",
-    "latitude": 18.7778874,
-    "longitude": 100.773732
-  },
-  {
-    "Type": "",
-    "Name": "",
-    "Street": "",
-    "City": "",
-    "State": "NAN",
-    "Zip": "nan",
-    "Hours of Operation": "",
-    "Area Served": "",
-    "Deliveries?": "",
-    "Additional Services Offered": "",
-    "Drive Thru?": "",
-    "Contact": "Teresa McKinney",
-    "Phone": "607-757-2191",
-    "Email": "tmckinne@uek12.org",
-    "latitude": 18.7778874,
-    "longitude": 100.773732
-  },
-  {
-    "Type": "",
-    "Name": "",
-    "Street": "",
-    "City": "",
-    "State": "NAN",
-    "Zip": "nan",
-    "Hours of Operation": "",
-    "Area Served": "",
-    "Deliveries?": "",
-    "Additional Services Offered": "",
-    "Drive Thru?": "",
-    "Contact": "Jessica Ferris",
-    "Phone": "607-655-8257",
-    "Email": "jferris@windsor-csd.org",
-    "latitude": 18.7778874,
-    "longitude": 100.773732
   }
 ]
