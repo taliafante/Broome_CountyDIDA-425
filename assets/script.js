@@ -8,7 +8,6 @@ const STATUS = document.getElementById('status');
 const SEARCH = document.getElementById('searchBox');
 const ZIP_INPUT = document.getElementById('zipBox');
 const RESET = document.getElementById('resetBtn');
-const EXPORT_BTN = document.getElementById('exportBtn');
 const TYPE_FILTERS = document.getElementById('typeFilters');
 
 // Map defaults
@@ -113,7 +112,7 @@ function filterRows(rows) {
 
   // Build filter checkboxes by Type
   const types = Array.from(new Set(rows.map(r => r.Type).filter(Boolean))).sort();
-  const colors = ['#e6194b','#3cb44b','#ffe119','#4363d8','#f58231','#911eb4','#46f0f0','#f032e6','#bcf60c'];
+  const colors = ['#e6194b','#3cb44b','#ead23bff','#304cb2ff','#f58231','#911eb4','#1E90FF','#f032e6','#bcf60c'];
   const typeColors = {};
   types.forEach((t, i) => typeColors[t] = colors[i % colors.length]);
 
@@ -256,13 +255,6 @@ function filterRows(rows) {
     ZIP_INPUT.value = '';
     TYPE_FILTERS.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
     refreshMarkers();
-  });
-
-  // Export filtered rows as GeoJSON
-  EXPORT_BTN.addEventListener('click', () => {
-    const filtered = filterRows(rows);
-    const geojson = toGeoJSON(filtered.map(row => ({ row })));
-    downloadJSON('filtered.geojson', geojson);
   });
 
   // Initial UI state
