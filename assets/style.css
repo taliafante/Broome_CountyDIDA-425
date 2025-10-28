@@ -71,3 +71,12 @@ main {
 .marker-meta { font-size: 12px; color: #374151; }
 .marker-meta b { color: #111827; }
 
+
+
+.inline-input {
+  display: inline!important;
+}
+
+input[type=checkbox] {
+  display: inline;
+}

@@ -112,17 +112,14 @@ function filterRows(rows) {
 
   // Build filter checkboxes by Type
   const types = Array.from(new Set(rows.map(r => r.Type).filter(Boolean))).sort();
-  const colors = ['#e6194b','#3cb44b','#ead23bff','#304cb2ff','#f58231','#911eb4','#1E90FF','#f032e6','#bcf60c'];
+  const colors = ['#e6194b','#3cb44b','#ffe119','#4363d8','#f58231','#911eb4','#46f0f0','#f032e6','#bcf60c']; 
   const typeColors = {};
-  types.forEach((t, i) => typeColors[t] = colors[i % colors.length]);
+  types.forEach((t,i) => typeColors[t] = colors[i % colors.length]);
 
   types.forEach(t => {
-    const id = `type_${t.replace(/\W+/g, '_')}`;
+    const id = `type_${t.replace(/\W+/g,'_')}`;
     const label = document.createElement('label');
-    label.innerHTML = `
-      <input type="checkbox" id="${id}" data-type="${t}" />
-      <span style="color:${typeColors[t]}; font-weight:bold;">${t}</span>
-    `;
+    label.innerHTML = `<input type="checkbox" id="${id}" data-type="${t}" /> <span style="color:${typeColors[t]}; font-weight:bold;">${t}</span>`;
     TYPE_FILTERS.appendChild(label);
   });
 
