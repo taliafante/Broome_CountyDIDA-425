@@ -69,7 +69,10 @@
     }
 
     main {
-      display: flex;;
+      display: flex;
+      flex: 1; /* 👈 allows the map area to fill remaining space */
+      height: 100%;
+      overflow: hidden;
     }
 
     /* Sidebar styling */
@@ -103,8 +106,8 @@
 
     /* Map styling */
     #map {
-      flex: 1;
-      height: 100%;
+      flex: 1; /* 👈 makes the map fill all remaining space beside the sidebar */
+      height: 100%; /* 👈 ensures full vertical stretch */
     }
 
     footer {
@@ -141,10 +144,6 @@
 
     <div id="map"></div>
   </main>
-
-  <footer>
-    <small>Built with Leaflet & OpenStreetMap.</small>
-  </footer>
 
   <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
