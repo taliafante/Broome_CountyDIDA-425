@@ -8,6 +8,7 @@ const STATUS = document.getElementById('status');
 const SEARCH = document.getElementById('searchBox');
 const ZIP_INPUT = document.getElementById('zipBox');
 const RESET = document.getElementById('resetBtn');
+const DOWNLOAD = document.getElementById('downloadBtn');
 const TYPE_FILTERS = document.getElementById('typeFilters');
 
 // Map defaults
@@ -253,6 +254,20 @@ function filterRows(rows) {
     TYPE_FILTERS.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
     refreshMarkers();
   });
+
+  const DOWNLOAD = document.getElementById('downloadBtn');
+
+DOWNLOAD.addEventListener('click', () => {
+  // Get filtered rows
+  const filteredRows = filterRows(rows);
+
+  // Convert to GeoJSON (or just plain JSON)
+  const geojsonData = toGeoJSON(filteredRows);
+
+  // Trigger download
+  downloadJSON('filtered_data.geojson', geojsonData);
+});
+
 
   // Initial UI state
   map.setView(DEFAULT_COORDS, DEFAULT_ZOOM);
