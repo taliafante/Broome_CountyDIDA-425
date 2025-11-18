@@ -124,6 +124,8 @@
 <body>
   <header>
     <h1>Community Services Map</h1>
+    <!-- Add just once (near top of body) -->
+    <div id="nws-alert-banner" style="display:none; position:fixed; top:10px; left:50%; transform:translateX(-50%); z-index:9999; padding:8px 12px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.2); background:#ffefc8; font-weight:600;"></div>
     <div class="controls">
       <input id="searchBox" type="search" placeholder="Search by name…" />
       <button id="resetBtn" title="Reset filters/search">Reset</button>
@@ -142,7 +144,7 @@
         Data is already geocoded and loaded from <code>assets/data.geocoded.json</code>.
       </p>
     </aside>
-
+    
     <div id="map"></div>
   </main>
 
@@ -150,5 +152,7 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script type="module" src="./assets/script.js"></script>
+
+  
 </body>
 </html>

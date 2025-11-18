@@ -394,4 +394,4 @@ function downloadJSON(filename, obj) {
     const gj = toGeoJSON(filtered);
     downloadJSON('filtered.geojson', gj);
   });
-})(); /*
+})(); */
