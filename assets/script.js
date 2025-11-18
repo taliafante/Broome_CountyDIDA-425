@@ -67,11 +67,13 @@ Contact: ${row['Phone'] || row['Email'] || 'N/A'}
     .map(([k, v]) => `<div class="marker-meta"><b>${k}:</b> ${v}</div>`)
     .join('');
 
+  const safeCopyData = encodeURIComponent(copyText);
+
   return `
     <div class="marker-title">${row.Name || ''}</div>
     ${infoHtml}
     <hr style="margin: 5px 0; border-top: 1px solid #ddd;">
-    <button class="copy-btn" data-copy="${copyText.replace(/"/g, '&quot;')}" style="
+    <button class="copy-btn" data-copy-text="${safeCopyData}" style="
         padding: 5px 10px; 
         background-color: #4CAF50; 
         color: white; 
@@ -82,31 +84,50 @@ Contact: ${row['Phone'] || row['Email'] || 'N/A'}
   `;
 }
 
+function copyToClipboard(text, buttonElement) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    // Position off-screen
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    try {
+        const successful = document.execCommand('copy');
+        const originalText = buttonElement.textContent;
+
+        if (successful) {
+            buttonElement.textContent = 'Copied!';
+            setTimeout(() => {
+                buttonElement.textContent = originalText;
+            }, 1000);
+        } else {
+            console.error('Copy command failed.');
+            buttonElement.textContent = 'Copy Failed';
+            setTimeout(() => {
+                buttonElement.textContent = originalText;
+            }, 1500);
+        }
+    } catch (err) {
+        console.error('Unable to copy text: ', err);
+    } finally {
+        document.body.removeChild(textarea);
+    }
+}
+
 // copy action and provide feedback
-async function handleCopyClick(e) {
+function handleCopyClick(e) {
     const btn = e.target.closest('.copy-btn');
     if (!btn) return;
 
-    // Retrieve the text to copy from the data-copy attribute
-    const textToCopy = btn.dataset.copy;
-    const originalText = btn.textContent;
-
-    try {
-        await navigator.clipboard.writeText(textToCopy);
-        btn.textContent = 'Information Copied';
-        // Reset the button text after a short delay
-        setTimeout(() => {
-            btn.textContent = originalText;
-        }, 1500);
-    } catch (err) {
-        console.error('Failed to copy text: ', err);
-        btn.textContent = 'Error';
-        setTimeout(() => {
-            btn.textContent = originalText;
-        }, 2000);
-        // Fallback for older browsers: use prompt/alert to display text
-        window.prompt("Could not automatically copy. Please manually copy the text below:", textToCopy);
-    }
+    // Retrieve the encoded text, then decode it
+    const encodedText = btn.dataset.copyText;
+    const textToCopy = decodeURIComponent(encodedText);
+    
+    // Use the robust copy function
+    copyToClipboard(textToCopy, btn);
 }
 
 // Helper: convert filtered features to GeoJSON
@@ -305,16 +326,13 @@ function filterRows(rows) {
 
   const DOWNLOAD = document.getElementById('downloadBtn');
 
-DOWNLOAD.addEventListener('click', () => {
-  // Get filtered rows
-  const filteredRows = filterRows(rows);
-
-  // Convert to GeoJSON (or just plain JSON)
-  const geojsonData = toGeoJSON(filteredRows);
-
-  // Trigger download
-  downloadJSON('filtered_data.geojson', geojsonData);
-});
+if (DOWNLOAD) {
+  DOWNLOAD.addEventListener('click', () => {
+    const filteredRows = filterRows(rows);
+    const geojsonData = toGeoJSON(filteredRows);
+    downloadJSON('filtered_data.geojson', geojsonData);
+  });
+}
 
 // Lets you click on the copy button
 map.getContainer().addEventListener('click', handleCopyClick);
