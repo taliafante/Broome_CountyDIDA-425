@@ -60,7 +60,8 @@ main {
 #filters h2 { margin: 8px 0 8px; font-size: 10px; color: var(--muted); }
 #typeFilters { display: grid; gap: 6px; }
 #typeFilters label { display: flex; align-items: center; gap: 8px; font-size: 10px; }
-#typeFilters input[type="checkbox"] { width: 16px; height: 16px; margin: 0; }
+#typeFilters input[type="checkbox"] { width: 16px; height: 16px; margin: 0; vertical-align: middle; }
+
 #filters .hint { color: var(--muted); font-size: 12px; margin-top: 12px; }
 
 #map { width: 100%; height: calc(100vh - 80px); }

@@ -9,6 +9,7 @@ const SEARCH = document.getElementById('searchBox');
 const ZIP_INPUT = document.getElementById('zipBox');
 const RESET = document.getElementById('resetBtn');
 const DOWNLOAD = document.getElementById('downloadBtn');
+const SCREENSHOT = document.getElementById('screenshotBtn');
 const TYPE_FILTERS = document.getElementById('typeFilters');
 
 // Map defaults
@@ -37,7 +38,7 @@ function debounce(fn, delay = 250) {
   };
 }
 
-// Helper: Build popup HTML
+// Build popup HTML
 function buildPopup(row) {
   const info = [
     ['Type', row.Type],
@@ -52,13 +53,60 @@ function buildPopup(row) {
     ['Email', row['Email']]
   ];
 
+  // The text content to be copied
+  const copyText = `
+${row.Name || 'Community Location'}
+Type: ${row.Type || 'N/A'}
+Address: ${[row.Street, row.City, row.State, row.Zip].filter(Boolean).join(', ') || 'N/A'}
+Hours: ${row['Hours of Operation'] || 'N/A'}
+Contact: ${row['Phone'] || row['Email'] || 'N/A'}
+`.trim();
+
+  const infoHtml = info
+    .filter(([_, v]) => v)
+    .map(([k, v]) => `<div class="marker-meta"><b>${k}:</b> ${v}</div>`)
+    .join('');
+
   return `
     <div class="marker-title">${row.Name || ''}</div>
-    ${info
-      .filter(([_, v]) => v)
-      .map(([k, v]) => `<div class="marker-meta"><b>${k}:</b> ${v}</div>`)
-      .join('')}
+    ${infoHtml}
+    <hr style="margin: 5px 0; border-top: 1px solid #ddd;">
+    <button class="copy-btn" data-copy="${copyText.replace(/"/g, '&quot;')}" style="
+        padding: 5px 10px; 
+        background-color: #4CAF50; 
+        color: white; 
+        border: none; 
+        border-radius: 4px; 
+        cursor: pointer;
+    ">Copy Info</button>
   `;
+}
+
+// copy action and provide feedback
+async function handleCopyClick(e) {
+    const btn = e.target.closest('.copy-btn');
+    if (!btn) return;
+
+    // Retrieve the text to copy from the data-copy attribute
+    const textToCopy = btn.dataset.copy;
+    const originalText = btn.textContent;
+
+    try {
+        await navigator.clipboard.writeText(textToCopy);
+        btn.textContent = 'Information Copied';
+        // Reset the button text after a short delay
+        setTimeout(() => {
+            btn.textContent = originalText;
+        }, 1500);
+    } catch (err) {
+        console.error('Failed to copy text: ', err);
+        btn.textContent = 'Error';
+        setTimeout(() => {
+            btn.textContent = originalText;
+        }, 2000);
+        // Fallback for older browsers: use prompt/alert to display text
+        window.prompt("Could not automatically copy. Please manually copy the text below:", textToCopy);
+    }
 }
 
 // Helper: convert filtered features to GeoJSON
@@ -268,6 +316,38 @@ DOWNLOAD.addEventListener('click', () => {
   downloadJSON('filtered_data.geojson', geojsonData);
 });
 
+// Lets you click on the copy button
+map.getContainer().addEventListener('click', handleCopyClick);
+
+SCREENSHOT.addEventListener('click', () => {
+  // Hide popups/layer controls that shouldn't be in the screenshot
+  const popup = document.querySelector('.leaflet-popup-pane');
+  if (popup) popup.style.display = 'none';
+  
+  // Hide the header/controls if you only want the map/sidebar
+  const controls = document.querySelector('header');
+  if (controls) controls.style.display = 'none';
+
+  const captureElement = document.body; // Capture the whole page body
+
+  html2canvas(captureElement, {
+    logging: false, 
+    useCORS: true, 
+    scrollX: 0,
+    scrollY: 0 // Capture the top of the page accurately
+  }).then(canvas => {
+    const a = document.createElement('a');
+    a.download = 'community_map_screenshot.png';
+    a.href = canvas.toDataURL('image/png');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
+    // Restore the hidden elements
+    if (popup) popup.style.display = 'block';
+    if (controls) controls.style.display = 'block';
+  });
+});
 
   // Initial UI state
   map.setView(DEFAULT_COORDS, DEFAULT_ZOOM);
