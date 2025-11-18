@@ -161,7 +161,7 @@ function filterRows(rows) {
 
   // Build filter checkboxes by Type
   const types = Array.from(new Set(rows.map(r => r.Type).filter(Boolean))).sort();
-  const colors = ['#e6194b','#3cb44b','#ffe119','#4363d8','#f58231','#911eb4','#46f0f0','#f032e6','#bcf60c']; 
+  const colors = ['#289237ff','#3a5ddbff','#24a0a0ff','#6e1788ff','#a11337ff','#d46e26ff','#d0ad14ff','#f032e6','#bcf60c']; 
   const typeColors = {};
   types.forEach((t,i) => typeColors[t] = colors[i % colors.length]);
 
@@ -320,11 +320,9 @@ DOWNLOAD.addEventListener('click', () => {
 map.getContainer().addEventListener('click', handleCopyClick);
 
 SCREENSHOT.addEventListener('click', () => {
-  // Hide popups/layer controls that shouldn't be in the screenshot
   const popup = document.querySelector('.leaflet-popup-pane');
   if (popup) popup.style.display = 'none';
   
-  // Hide the header/controls if you only want the map/sidebar
   const controls = document.querySelector('header');
   if (controls) controls.style.display = 'none';
 

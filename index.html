@@ -50,6 +50,13 @@
       width: 200px;
     }
 
+    #zipBox {
+        width: 100%;
+        max-width: 250px; 
+        margin-top: 0.25rem;   /* Smaller gap from header above */
+        margin-bottom: 1.2rem; /* Larger gap before the next header (Filter by Type) */
+    }
+
     button {
       background-color: #52ab98;
       color: #fff;
@@ -85,12 +92,13 @@
 
     aside h3 {
       margin-top: 1.2rem;
+      margin-bottom: 0.5rem;
       font-size: 1.2rem;
       color: #2b6777;
     }
 
-    aside label {
-      font-weight: 600;
+    aside h3:first-of-type {
+        margin-top: 0;
     }
 
     aside input {
@@ -135,8 +143,9 @@
 
   <main>
     <aside id="filters">
-      <label for="zipBox">Filter by zip code:</label>
+      <h3>Filter by zip code</h3>
       <input type="text" id="zipBox" placeholder="e.g. 13902" />
+      
       <h3>Filter by Type</h3>
       <div id="typeFilters"></div>
       <p class="hint">
