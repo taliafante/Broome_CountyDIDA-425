@@ -17,6 +17,48 @@ const DEFAULT_COORDS = [42.0987, -75.9180];
 const DEFAULT_ZOOM = 12;
 const ICON_URL = 'https://cdn-icons-png.flaticon.com/512/684/684908.png';
 
+const blessingBoxIcon = L.icon({
+  iconUrl: './Completed markers/blessing_box.png',
+  iconSize: [38, 40],
+  iconAnchor: [16, 32],
+});
+
+const communityMealsIcon = L.icon({
+  iconUrl: './Completed markers/community_meals.png',
+  iconSize: [38, 40],
+  iconAnchor: [16, 32],
+});
+
+const foodPantryIcon = L.icon({
+  iconUrl: './Completed markers/food_pantries.png',
+  iconSize: [38, 40],
+  iconAnchor: [16, 32],
+});
+
+const foodPantrySchoolIcon = L.icon({
+  iconUrl: './Completed markers/food_pantryschool.png',
+  iconSize: [38, 40],
+  iconAnchor: [16, 32],
+});
+
+const mobileFoodPantryIcon = L.icon({
+  iconUrl: './Completed markers/mobile_foodpantry.png',
+  iconSize: [38, 40],
+  iconAnchor: [16, 32],
+});
+
+const seniorCenterIcon = L.icon({
+  iconUrl: './Completed markers/senior_center.png',
+  iconSize: [38, 40],
+  iconAnchor: [16, 32],
+});
+
+const shelterIcon = L.icon({
+  iconUrl: './Completed markers/shelter.png',
+  iconSize: [38, 40],
+  iconAnchor: [16, 32],
+});
+
 // Helper: update status text
 function setStatus(msg) {
   STATUS.textContent = msg;
@@ -53,7 +95,6 @@ function buildPopup(row) {
     ['Email', row['Email']]
   ];
 
-  // The text content to be copied
   const copyText = `
 ${row.Name || 'Community Location'}
 Type: ${row.Type || 'N/A'}
@@ -87,7 +128,6 @@ Contact: ${row['Phone'] || row['Email'] || 'N/A'}
 function copyToClipboard(text, buttonElement) {
     const textarea = document.createElement('textarea');
     textarea.value = text;
-    // Position off-screen
     textarea.style.position = 'fixed';
     textarea.style.opacity = '0';
     
@@ -104,7 +144,6 @@ function copyToClipboard(text, buttonElement) {
                 buttonElement.textContent = originalText;
             }, 1000);
         } else {
-            console.error('Copy command failed.');
             buttonElement.textContent = 'Copy Failed';
             setTimeout(() => {
                 buttonElement.textContent = originalText;
@@ -117,20 +156,14 @@ function copyToClipboard(text, buttonElement) {
     }
 }
 
-// copy action and provide feedback
 function handleCopyClick(e) {
     const btn = e.target.closest('.copy-btn');
     if (!btn) return;
-
-    // Retrieve the encoded text, then decode it
     const encodedText = btn.dataset.copyText;
     const textToCopy = decodeURIComponent(encodedText);
-    
-    // Use the robust copy function
     copyToClipboard(textToCopy, btn);
 }
 
-// Helper: convert filtered features to GeoJSON
 function toGeoJSON(features) {
   return {
     type: "FeatureCollection",
@@ -144,7 +177,6 @@ function toGeoJSON(features) {
   };
 }
 
-// Helper: trigger download of JSON file
 function downloadJSON(filename, obj) {
   const blob = new Blob([JSON.stringify(obj, null, 2)], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
@@ -157,7 +189,6 @@ function downloadJSON(filename, obj) {
   URL.revokeObjectURL(url);
 }
 
-// Helper: apply active filters and return filtered rows
 function filterRows(rows) {
   const activeTypes = new Set(
     [...TYPE_FILTERS.querySelectorAll('input[type=checkbox]')]
@@ -175,46 +206,73 @@ function filterRows(rows) {
   });
 }
 
-// Main execution
+
 (async function main() {
   setStatus('Loading geocoded data…');
   const rows = await fetchJSON('./assets/data.geocoded.json');
 
-  // Build filter checkboxes by Type
+  const typeIconURLs = {
+  "Blessing Boxes": './icons/box.png',
+  "Community Meals": './icons/community.png',
+  "Food Pantries": './icons/food_pantry.png',
+  "Food Pantries (School)": './icons/school.png',
+  "Mobile Food Pantries": './icons/van.png',
+  "Senior Centers": './icons/senior.png',
+  "Shelters": './icons/shelter.png'
+};
+
   const types = Array.from(new Set(rows.map(r => r.Type).filter(Boolean))).sort();
+
+types.forEach(t => {
+  const id = `type_${t.replace(/\W+/g,'_')}`;
+
+  // Create checkbox
+  const checkbox = document.createElement('input');
+  checkbox.type = 'checkbox';
+  checkbox.id = id;
+  checkbox.dataset.type = t;
+
+  // Create icon image
+  const img = document.createElement('img');
+  img.src = typeIconURLs[t];  // make sure these exist in /icons folder
+  img.style.width = '20px';
+  img.style.height = '20px';
+  img.style.marginRight = '5px';
+  img.style.verticalAlign = 'middle';
+
+  // Create label
+  const label = document.createElement('label');
+  label.style.display = 'flex';
+  label.style.alignItems = 'center';
+  label.style.marginBottom = '4px';
+
+  label.appendChild(checkbox);
+  label.appendChild(img);
+  label.appendChild(document.createTextNode(t));
+
+  TYPE_FILTERS.appendChild(label);
+});
+
   const colors = ['#289237ff','#3a5ddbff','#24a0a0ff','#6e1788ff','#a11337ff','#d46e26ff','#d0ad14ff','#f032e6','#bcf60c']; 
   const typeColors = {};
   types.forEach((t,i) => typeColors[t] = colors[i % colors.length]);
 
-  types.forEach(t => {
-    const id = `type_${t.replace(/\W+/g,'_')}`;
-    const label = document.createElement('label');
-    label.innerHTML = `<input type="checkbox" id="${id}" data-type="${t}" /> <span style="color:${typeColors[t]}; font-weight:bold;">${t}</span>`;
-    TYPE_FILTERS.appendChild(label);
-  });
-
-  // Initialize Leaflet map
   const map = L.map('map').setView(DEFAULT_COORDS, DEFAULT_ZOOM);
 
-  // Base map
   const baseMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  // Marker cluster
   const cluster = L.markerClusterGroup().addTo(map);
 
-  // Rain overlay (toggleable)
   const rainLayer = L.tileLayer(
     'https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=dfc6b59b27674760d475b6984af8a621',
     { attribution: '&copy; <a href="https://openweathermap.org/">OpenWeatherMap</a>', opacity: 0.8 }
   );
 
-  // Layer control
   L.control.layers({ "OpenStreetMap": baseMap }, { "Rain": rainLayer }, { collapsed: false }).addTo(map);
 
-  // Weather control (top-right)
   const weatherControl = L.control({ position: 'topright' });
   weatherControl.onAdd = function () {
     const div = L.DomUtil.create('div', 'weather-box');
@@ -228,7 +286,6 @@ function filterRows(rows) {
   };
   weatherControl.addTo(map);
 
-  // --- WEATHER FORECAST FUNCTION ---
   async function fetchForecast(lat, lon) {
     const weatherDiv = document.querySelector('.weather-box');
     try {
@@ -248,25 +305,16 @@ function filterRows(rows) {
       const forecastData = await forecastResp.json();
 
       const current = forecastData.properties.periods[0];
-      console.log('Current forecast:', current);
-
-      // Update the weather control box
       weatherDiv.innerHTML = `${current.shortForecast}, ${current.temperature}°${current.temperatureUnit}`;
     } catch (err) {
-      console.error('Weather forecast error:', err);
       weatherDiv.innerHTML = 'Unable to load weather';
     }
   }
 
-  // Load forecast for default location by click
   map.on('click', e => {
     fetchForecast(e.latlng.lat, e.latlng.lng);
   });
 
-
-
-
-  // Refresh marker display
   function refreshMarkers() {
     cluster.clearLayers();
 
@@ -277,25 +325,44 @@ function filterRows(rows) {
       const lat = Number(row.latitude), lon = Number(row.longitude);
       if (Number.isNaN(lat) || Number.isNaN(lon)) continue;
 
-      const icon = L.icon({
-        iconUrl: ICON_URL,
-        iconSize: [25, 25],
-        iconAnchor: [12, 25],
-        popupAnchor: [0, -25]
-      });
+      // pick correct icon
+      let icon;
+      switch(row.Type) {
+        case "Blessing Boxes":
+          icon = blessingBoxIcon;
+          break;
+        case "Community Meals":
+          icon = communityMealsIcon;
+          break;
+        case "Food Pantries":
+          icon = foodPantryIcon;
+          break;
+        case "Food Pantries (School)":
+          icon = foodPantrySchoolIcon;
+          break;
+        case "Mobile Food Pantries":
+          icon = mobileFoodPantryIcon;
+          break;
+        case "Senior Centers":
+          icon = seniorCenterIcon;
+          break;
+        case "Shelters":
+          icon = shelterIcon;
+          break;
+        default:
+          icon = L.icon({
+            iconUrl: ICON_URL,
+            iconSize: [25, 25],
+            iconAnchor: [12, 25],
+            popupAnchor: [0, -25]
+          });
+      }
+
 
       const marker = L.marker([lat, lon], { icon });
       marker.bindPopup(buildPopup(row));
       marker.bindTooltip(row.Name || '', { direction: 'top' });
 
-      marker.on('click', () => {
-        marker.setIcon(L.icon({
-          iconUrl: ICON_URL,
-          iconSize: [35, 35],
-          iconAnchor: [17, 35],
-          popupAnchor: [0, -35]
-        }));
-      });
 
       cluster.addLayer(marker);
       features.push({ lat, lon });
@@ -311,12 +378,10 @@ function filterRows(rows) {
     }
   }
 
-  // Debounced event listeners
   TYPE_FILTERS.addEventListener('change', refreshMarkers);
   SEARCH.addEventListener('input', debounce(refreshMarkers, 250));
   ZIP_INPUT.addEventListener('input', debounce(refreshMarkers, 300));
 
-  // Reset all filters
   RESET.addEventListener('click', () => {
     SEARCH.value = '';
     ZIP_INPUT.value = '';
@@ -326,46 +391,43 @@ function filterRows(rows) {
 
   const DOWNLOAD = document.getElementById('downloadBtn');
 
-if (DOWNLOAD) {
-  DOWNLOAD.addEventListener('click', () => {
-    const filteredRows = filterRows(rows);
-    const geojsonData = toGeoJSON(filteredRows);
-    downloadJSON('filtered_data.geojson', geojsonData);
+  if (DOWNLOAD) {
+    DOWNLOAD.addEventListener('click', () => {
+      const filteredRows = filterRows(rows);
+      const geojsonData = toGeoJSON(filteredRows);
+      downloadJSON('filtered_data.geojson', geojsonData);
+    });
+  }
+
+  map.getContainer().addEventListener('click', handleCopyClick);
+
+  SCREENSHOT.addEventListener('click', () => {
+    const popup = document.querySelector('.leaflet-popup-pane');
+    if (popup) popup.style.display = 'none';
+    
+    const controls = document.querySelector('header');
+    if (controls) controls.style.display = 'none';
+
+    const captureElement = document.body;
+
+    html2canvas(captureElement, {
+      logging: false, 
+      useCORS: true, 
+      scrollX: 0,
+      scrollY: 0
+    }).then(canvas => {
+      const a = document.createElement('a');
+      a.download = 'community_map_screenshot.png';
+      a.href = canvas.toDataURL('image/png');
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      if (popup) popup.style.display = 'block';
+      if (controls) controls.style.display = 'block';
+    });
   });
-}
 
-// Lets you click on the copy button
-map.getContainer().addEventListener('click', handleCopyClick);
-
-SCREENSHOT.addEventListener('click', () => {
-  const popup = document.querySelector('.leaflet-popup-pane');
-  if (popup) popup.style.display = 'none';
-  
-  const controls = document.querySelector('header');
-  if (controls) controls.style.display = 'none';
-
-  const captureElement = document.body; // Capture the whole page body
-
-  html2canvas(captureElement, {
-    logging: false, 
-    useCORS: true, 
-    scrollX: 0,
-    scrollY: 0 // Capture the top of the page accurately
-  }).then(canvas => {
-    const a = document.createElement('a');
-    a.download = 'community_map_screenshot.png';
-    a.href = canvas.toDataURL('image/png');
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-
-    // Restore the hidden elements
-    if (popup) popup.style.display = 'block';
-    if (controls) controls.style.display = 'block';
-  });
-});
-
-  // Initial UI state
   map.setView(DEFAULT_COORDS, DEFAULT_ZOOM);
   setStatus('Select filters to view locations.');
 })();
