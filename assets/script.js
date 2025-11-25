@@ -272,7 +272,7 @@ types.forEach(t => {
 });
 
   const colors = ['#289237ff','#3a5ddbff','#24a0a0ff','#6e1788ff','#a11337ff','#d46e26ff','#d0ad14ff','#f032e6','#bcf60c']; 
-  const typeColors = {};//['#000','#000','#000','#000','#000','#000','#000','#000','#000']; ;
+  const typeColors = {}; 
   types.forEach((t,i) => typeColors[t] = colors[i % colors.length]);
 
   const map = L.map('map').setView(DEFAULT_COORDS, DEFAULT_ZOOM);
@@ -283,6 +283,11 @@ types.forEach(t => {
   }).addTo(map);
 
 
+var Thunderforest_Neighbourhood = L.tileLayer('https://{s}.tile.thunderforest.com/neighbourhood/{z}/{x}/{y}{r}.png?apikey={apikey}', {
+    attribution: '&copy; Thunderforest &copy; OpenStreetMap contributors',
+    apikey: '<your apikey>',
+    maxZoom: 22
+});
 
 var Stadia_AlidadeSmooth = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.{ext}', {
     minZoom: 0,
@@ -303,12 +308,6 @@ var Stadia_AlidadeSatellite = L.tileLayer('https://tiles.stadiamaps.com/tiles/al
 	ext: 'jpg'
 });
 
-var Thunderforest_Neighbourhood = L.tileLayer('https://{s}.tile.thunderforest.com/neighbourhood/{z}/{x}/{y}{r}.png?apikey={apikey}', {
-    attribution: '&copy; Thunderforest &copy; OpenStreetMap contributors',
-    apikey: '<your apikey>',
-    maxZoom: 22
-});
-
 var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {
 	minZoom: 0,
 	maxZoom: 20,
@@ -316,19 +315,19 @@ var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/a
 	ext: 'png'
 });
 
-// ⭐ Add your DEFAULT basemap:
-Stadia_AlidadeSmooth.addTo(map);
+// Add your DEFAULT basemap:
+Thunderforest_Neighbourhood.addTo(map);
 
-// ⭐ Basemap options for switching:
+// Basemap options for switching:
 var baseMaps = {
+    "Thunderforest": Thunderforest_Neighbourhood,
     "Blank": Stadia_AlidadeSmooth,
     "Topography": OpenTopoMap,
     "Satellite": Stadia_AlidadeSatellite,
-    "Thunderforest": Thunderforest_Neighbourhood,
     "Dark": Stadia_AlidadeSmoothDark
 };
 
-// ⭐ Add clickable basemap layer control:
+// Add clickable basemap layer control:
 L.control.layers(baseMaps, null, {
     position: 'bottomright',
     collapsed: false
