@@ -12,6 +12,8 @@ const DOWNLOAD = document.getElementById('downloadBtn');
 const SCREENSHOT = document.getElementById('screenshotBtn');
 const TYPE_FILTERS = document.getElementById('typeFilters');
 
+
+
 // Map defaults
 const DEFAULT_COORDS = [42.0987, -75.9180];
 const DEFAULT_ZOOM = 12;
@@ -223,13 +225,26 @@ function filterRows(rows) {
 
   const types = Array.from(new Set(rows.map(r => r.Type).filter(Boolean))).sort();
 
+  let i = 0 ; 
 types.forEach(t => {
   const id = `type_${t.replace(/\W+/g,'_')}`;
+
+  const colors = ['#289237ff','#3a5ddbff','#24a0a0ff','#6e1788ff','#a11337ff','#d46e26ff','#d0ad14ff','#f032e6','#bcf60c']; 
+
+  // create a container
+  const contanier = document.createElement('div');
+  contanier.id = id;
+  contanier.classList.add('type-filter-item');
+  contanier.style.color = colors[i];
+  contanier.style.backgroundColor = i%2==0 ? '#f0f0f0' : '#ffffff';
+  i++;
+
+  console.log(t);
 
   // Create checkbox
   const checkbox = document.createElement('input');
   checkbox.type = 'checkbox';
-  checkbox.id = id;
+  //checkbox.id = id;
   checkbox.dataset.type = t;
 
   // Create icon image
@@ -246,15 +261,18 @@ types.forEach(t => {
   label.style.alignItems = 'center';
   label.style.marginBottom = '4px';
 
+
   label.appendChild(checkbox);
   label.appendChild(img);
   label.appendChild(document.createTextNode(t));
 
-  TYPE_FILTERS.appendChild(label);
+  contanier.appendChild(label);
+
+  TYPE_FILTERS.appendChild(contanier);
 });
 
   const colors = ['#289237ff','#3a5ddbff','#24a0a0ff','#6e1788ff','#a11337ff','#d46e26ff','#d0ad14ff','#f032e6','#bcf60c']; 
-  const typeColors = {};
+  const typeColors = {};//['#000','#000','#000','#000','#000','#000','#000','#000','#000']; ;
   types.forEach((t,i) => typeColors[t] = colors[i % colors.length]);
 
   const map = L.map('map').setView(DEFAULT_COORDS, DEFAULT_ZOOM);
@@ -264,8 +282,58 @@ types.forEach(t => {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
+var baseMaps = {
+  "Stadia Smooth": Stadia_AlidadeSmooth,
+  "OpenTopoMap": OpenTopoMap,
+  "Stadia Outdoors": Stadia_Outdoors,
+  "Thunderforest Neighbourhood": Thunderforest_Neighbourhood
+};
+
+var Stadia_AlidadeSmooth = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.{ext}', {
+    minZoom: 0,
+    maxZoom: 20,
+    attribution: '&copy; Stadia Maps &copy; OpenMapTiles &copy; OpenStreetMap',
+    ext: 'png'
+});
+
+var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    maxZoom: 17,
+    attribution: 'Map data &copy; OpenStreetMap contributors'
+});
+
+var Stadia_Outdoors = L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.{ext}', {
+    minZoom: 0,
+    maxZoom: 20,
+    attribution: '&copy; Stadia Maps &copy; OpenMapTiles &copy; OpenStreetMap',
+    ext: 'png'
+});
+
+var Thunderforest_Neighbourhood = L.tileLayer('https://{s}.tile.thunderforest.com/neighbourhood/{z}/{x}/{y}{r}.png?apikey={apikey}', {
+    attribution: '&copy; Thunderforest &copy; OpenStreetMap contributors',
+    apikey: '<your apikey>',
+    maxZoom: 22
+});
+
+// ⭐ Add your DEFAULT basemap:
+Stadia_AlidadeSmooth.addTo(map);
+
+// ⭐ Basemap options for switching:
+var baseMaps = {
+    "Stadia Smooth": Stadia_AlidadeSmooth,
+    "OpenTopoMap": OpenTopoMap,
+    "Stadia Outdoors": Stadia_Outdoors,
+    "Thunderforest": Thunderforest_Neighbourhood
+};
+
+// ⭐ Add clickable basemap layer control:
+L.control.layers(baseMaps, null, {
+    position: 'bottomright',
+    collapsed: false
+}).addTo(map);
+
+
   const cluster = L.markerClusterGroup({
-  disableClusteringAtZoom: 13   // markers separate once zoomed to 15+
+  disableClusteringAtZoom: 13  
 }).addTo(map);
 
 

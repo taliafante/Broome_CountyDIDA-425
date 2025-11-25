@@ -1,0 +1,127 @@
+
+    /* General layout */
+    body {
+      margin: 0;
+      font-family: 'Inter', 'Segoe UI', Roboto, sans-serif;
+      color: #333;
+      background-color: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      background-color: #2b6777;
+      color: #fff;
+      padding: 1rem 2rem;;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    input[type="search"], input[type="text"] {
+      padding: .5rem 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      width: 200px;
+    }
+
+    #zipBox {
+        width: 100%;
+        max-width: 250px; 
+        margin-top: 0.25rem;   /* Smaller gap from header above */
+        margin-bottom: 1.2rem; /* Larger gap before the next header (Filter by Type) */
+    }
+
+    button {
+      background-color: #52ab98;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #3e8b79;
+    }
+
+    #status {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    main {
+      display: flex;
+      flex: 1; /* 👈 allows the map area to fill remaining space */
+      height: 100%;
+      overflow: hidden;
+    }
+
+    /* Sidebar styling */
+    aside#filters {
+      width: 280px;
+      background-color: #fff;
+      border-right: 1px solid #ddd;
+      padding: 1.5rem;;
+    }
+
+    aside h3 {
+      margin-top: 1.2rem;
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
+      color: #2b6777;
+    }
+
+    aside h3:first-of-type {
+        margin-top: 0;
+    }
+
+    aside input {
+      /* width: 175%; this changes filter checkbox positions */
+      height: 3rem;
+      margin-top: 0.4rem;
+      margin-bottom: .1rem;
+    }
+
+    .hint {
+      font-size: 0.8rem;
+      color: #777;
+    }
+
+    /* Map styling */
+    #map {
+      flex: 1; /* 👈 makes the map fill all remaining space beside the sidebar */
+      height: 100%; /* 👈 ensures full vertical stretch */
+    }
+
+    footer {
+      background-color: #2b6777;
+      color: #fff;
+      text-align: center;
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+
+/* .type-filter-item {
+   color: white;;
+}
+
+
+#type_Blessing_Boxes {
+    background-color: #289237ff;
+} */
+
+/* ['#289237ff','#3a5ddbff','#24a0a0ff','#6e1788ff','#a11337ff','#d46e26ff','#d0ad14ff','#f032e6','#bcf60c'] */
