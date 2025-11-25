@@ -264,7 +264,10 @@ types.forEach(t => {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-  const cluster = L.markerClusterGroup().addTo(map);
+  const cluster = L.markerClusterGroup({
+  disableClusteringAtZoom: 13   // markers separate once zoomed to 15+
+}).addTo(map);
+
 
 
   // Refresh marker display
