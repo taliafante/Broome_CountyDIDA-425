@@ -282,12 +282,7 @@ types.forEach(t => {
     attribution: '&copy; OpenStreetMap contributors'
   }).addTo(map);
 
-var baseMaps = {
-  "Stadia Smooth": Stadia_AlidadeSmooth,
-  "OpenTopoMap": OpenTopoMap,
-  "Stadia Outdoors": Stadia_Outdoors,
-  "Thunderforest Neighbourhood": Thunderforest_Neighbourhood
-};
+
 
 var Stadia_AlidadeSmooth = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.{ext}', {
     minZoom: 0,
@@ -301,11 +296,11 @@ var OpenTopoMap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png'
     attribution: 'Map data &copy; OpenStreetMap contributors'
 });
 
-var Stadia_Outdoors = L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}{r}.{ext}', {
-    minZoom: 0,
-    maxZoom: 20,
-    attribution: '&copy; Stadia Maps &copy; OpenMapTiles &copy; OpenStreetMap',
-    ext: 'png'
+var Stadia_AlidadeSatellite = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}', {
+	minZoom: 0,
+	maxZoom: 20,
+	attribution: '&copy; CNES, Distribution Airbus DS, © Airbus DS, © PlanetObserver (Contains Copernicus Data) | &copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	ext: 'jpg'
 });
 
 var Thunderforest_Neighbourhood = L.tileLayer('https://{s}.tile.thunderforest.com/neighbourhood/{z}/{x}/{y}{r}.png?apikey={apikey}', {
@@ -314,15 +309,23 @@ var Thunderforest_Neighbourhood = L.tileLayer('https://{s}.tile.thunderforest.co
     maxZoom: 22
 });
 
+var Stadia_AlidadeSmoothDark = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.{ext}', {
+	minZoom: 0,
+	maxZoom: 20,
+	attribution: '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	ext: 'png'
+});
+
 // ⭐ Add your DEFAULT basemap:
 Stadia_AlidadeSmooth.addTo(map);
 
 // ⭐ Basemap options for switching:
 var baseMaps = {
-    "Stadia Smooth": Stadia_AlidadeSmooth,
-    "OpenTopoMap": OpenTopoMap,
-    "Stadia Outdoors": Stadia_Outdoors,
-    "Thunderforest": Thunderforest_Neighbourhood
+    "Blank": Stadia_AlidadeSmooth,
+    "Topography": OpenTopoMap,
+    "Satellite": Stadia_AlidadeSatellite,
+    "Thunderforest": Thunderforest_Neighbourhood,
+    "Dark": Stadia_AlidadeSmoothDark
 };
 
 // ⭐ Add clickable basemap layer control:

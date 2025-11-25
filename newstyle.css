@@ -90,7 +90,7 @@
 
     aside input {
       /* width: 175%; this changes filter checkbox positions */
-      height: 3rem;
+      height: 2rem;
       margin-top: 0.4rem;
       margin-bottom: .1rem;
     }
@@ -114,14 +114,5 @@
       font-size: 0.9rem;
     }
 
-
-/* .type-filter-item {
-   color: white;;
-}
-
-
-#type_Blessing_Boxes {
-    background-color: #289237ff;
-} */
 
 /* ['#289237ff','#3a5ddbff','#24a0a0ff','#6e1788ff','#a11337ff','#d46e26ff','#d0ad14ff','#f032e6','#bcf60c'] */
