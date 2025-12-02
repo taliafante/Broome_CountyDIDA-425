@@ -11,6 +11,15 @@ const RESET = document.getElementById('resetBtn');
 const DOWNLOAD = document.getElementById('downloadBtn');
 const SCREENSHOT = document.getElementById('screenshotBtn');
 const TYPE_FILTERS = document.getElementById('typeFilters');
+const SELECT_ALL = document.getElementById('selectAllBtn');
+
+SELECT_ALL.addEventListener('click', () => {
+  TYPE_FILTERS.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.checked = true;
+  });
+  refreshMarkers();
+});
+
 
 
 
@@ -342,6 +351,51 @@ L.control.layers(baseMaps, null, {
   disableClusteringAtZoom: 13  
 }).addTo(map);
 
+// Route line GeoJSON
+const routeLine = {
+  "type": "Feature",
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [-76.80510126911796, 42.08992828402145],
+      [-76.78692131499254, 42.090476637548015],
+      [-76.70803071240952, 42.02409941652692],
+      [-76.64966584591532, 42.018488247723106],
+      [-76.61629748996636, 42.00020867577443],
+      [-76.44164507907941, 42.02669362310484],
+      [-76.40180057070435, 42.02126509003903],
+      [-76.30139162377996, 42.08267937523969],
+      [-76.24952042392287, 42.10159914605536],
+      [-76.21171599052128, 42.082026869692854],
+      [-76.16775734923927, 42.087572961145604],
+      [-76.13039250414955, 42.059837655817475],
+      [-75.95895379844585, 42.11986115507637],
+      [-75.92818274625327, 42.11464397526138],
+      [-75.90192501143054, 42.11473468591885],
+      [-75.92995194218976, 42.11474943413152]
+    ]
+  }
+};
+
+const routeStyle = {
+  color: "#0000FF",
+  weight: 4,
+  opacity: 0.8
+};
+
+// Create but do NOT add to map yet
+const routeLayer = L.geoJSON(routeLine, { style: routeStyle });
+
+
+const toggleRoute = document.getElementById("toggleRoute");
+
+toggleRoute.addEventListener("change", () => {
+  if (toggleRoute.checked) {
+    routeLayer.addTo(map);
+  } else {
+    map.removeLayer(routeLayer);
+  }
+});
 
 
   // Refresh marker display

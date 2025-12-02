@@ -16,12 +16,10 @@
 
 <body>
   <header>
-    <h1>Community Services Map</h1>
+    <h1>Broome County Community Services Map</h1>
     <!-- Add just once (near top of body) -->
     <div id="nws-alert-banner" style="display:none; position:fixed; top:10px; left:50%; transform:translateX(-50%); z-index:9999; padding:8px 12px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.2); background:#ffefc8; font-weight:600;"></div>
     <div class="controls">
-      <input id="searchBox" type="search" placeholder="Search by name…" />
-      <button id="resetBtn" title="Reset filters/search">Reset</button>
       <button id="screenshotBtn">Screenshot</button>
       <button id="weatherBtn"><a href="https://forecast.weather.gov/MapClick.php?lat=42.160225737750224&lon=-75.8196013865951" target="_blank"style="text-decoration: none;">Weather Updates</a></button>
     </div>
@@ -30,18 +28,27 @@
 
   <main>
     <aside id="filters">
-      <h3>Filter by zip code</h3>
-      <input type="text" id="zipBox" placeholder="e.g. 13902" />
+      <h3>Search Box</h3>
+      <input id="searchBox" type="search" placeholder="Search by name…" />
       
       <h3>Filter by Type</h3>
       <div id="typeFilters"></div>
       <p class="hint">
-        Data is already geocoded and loaded from <code>assets/data.geocoded.json</code>.
+        <button id="selectAllBtn" title="Select all types">Select All</button>
+        <button id="resetBtn" title="Reset filters/search">Reset</button>
       </p>
+      <h4>Filter by zip code</h4>
+      <input type="text" id="zipBox" placeholder="e.g. 13902" />
+      <label class="type-filter-item">
+      <input type="checkbox" id="toggleRoute">
+      I-86 Route
+    </label>
     </aside>
+
     
     <div id="map"></div>
   </main>
+
 
   <!-- Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
