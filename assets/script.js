@@ -263,7 +263,12 @@ types.forEach(t => {
 
   label.appendChild(checkbox);
   label.appendChild(img);
-  label.appendChild(document.createTextNode(t));
+  const textSpan = document.createElement('span');
+  textSpan.textContent = t;
+  textSpan.style.fontWeight = 'bold';   
+  textSpan.style.marginLeft = '5px';    
+
+  label.appendChild(textSpan);
 
   contanier.appendChild(label);
 
