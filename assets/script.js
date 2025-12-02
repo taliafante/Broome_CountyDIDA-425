@@ -324,11 +324,11 @@ Thunderforest_Neighbourhood.addTo(map);
 
 // Basemap options for switching:
 var baseMaps = {
-    "Thunderforest": Thunderforest_Neighbourhood,
+    "Colored": Thunderforest_Neighbourhood,
     "Blank": Stadia_AlidadeSmooth,
+    "Blank Dark": Stadia_AlidadeSmoothDark,
     "Topography": OpenTopoMap,
-    "Satellite": Stadia_AlidadeSatellite,
-    "Dark": Stadia_AlidadeSmoothDark
+    "Satellite": Stadia_AlidadeSatellite
 };
 
 // Add clickable basemap layer control:
