@@ -239,7 +239,6 @@ types.forEach(t => {
   contanier.style.backgroundColor = i%2==0 ? '#f0f0f0' : '#ffffff';
   i++;
 
-  console.log(t);
 
   // Create checkbox
   const checkbox = document.createElement('input');
