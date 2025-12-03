@@ -383,17 +383,50 @@ const routeStyle = {
   opacity: 0.8
 };
 
+// Route line GeoJSON
+const routeLine2 = {
+  "type": "Feature",
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [-75.8968653770467, 42.09955173758598],
+      [-75.8971019254649, 42.0994732393974],
+      [-75.89694099293258, 42.09906724733798],
+      [-75.89582519404189, 42.099321987757506],
+      [-75.89769201141671, 42.10221162774447],
+    ]
+  }
+};
+
+const routeStyle2 = {
+  color: "#d11d1dff",
+  weight: 4,
+  opacity: 0.8
+};
+
 // Create but do NOT add to map yet
 const routeLayer = L.geoJSON(routeLine, { style: routeStyle });
+const routeLayer2 = L.geoJSON(routeLine2, { style: routeStyle2 });
 
 
-const toggleRoute = document.getElementById("toggleRoute");
+const toggleRoute86 = document.getElementById("toggleRoute86");
+const toggleTompkins = document.getElementById("toggleTompkins");
 
-toggleRoute.addEventListener("change", () => {
-  if (toggleRoute.checked) {
+// I-86 route lines
+toggleRoute86.addEventListener("change", () => {
+  if (toggleRoute86.checked) {
     routeLayer.addTo(map);
   } else {
     map.removeLayer(routeLayer);
+  }
+});
+
+
+toggleTompkins.addEventListener("change", () => {
+  if (toggleTompkins.checked) {
+    routeLayer2.addTo(map);
+  } else {
+    map.removeLayer(routeLayer2);
   }
 });
 
