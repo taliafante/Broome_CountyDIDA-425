@@ -206,16 +206,43 @@ function filterRows(rows) {
       .filter(cb => cb.checked)
       .map(cb => cb.dataset.type)
   );
+
   const query = SEARCH.value.trim().toLowerCase();
   const zipList = ZIP_INPUT.value.split(',').map(z => z.trim()).filter(Boolean);
 
   return rows.filter(row => {
     if (activeTypes.size && !activeTypes.has(row.Type)) return false;
-    if (query && !(row.Name || '').toLowerCase().includes(query)) return false;
+
+const searchable = [
+  row.Name,
+  row.Type,
+  row.Street,
+  row.City,
+  row.State,
+  row.Zip,
+  row['Hours of Operation'],
+  row['Area Served'],
+  row['Deliveries?'],
+  row['Additional Services Offered'],
+  row['Drive Thru'],
+  row.Contact,
+  row.Phone,
+  row.Email
+]
+  .filter(Boolean)
+  .join(' ')
+  .toLowerCase();
+
+
+    if (query && !searchable.includes(query)) return false;
+
+    // 🔹 ZIP filter
     if (zipList.length && (!row.Zip || !zipList.includes(String(row.Zip)))) return false;
+
     return row.latitude && row.longitude;
   });
 }
+
 
 
 (async function main() {
@@ -348,7 +375,7 @@ L.control.layers(baseMaps, null, {
 
 
   const cluster = L.markerClusterGroup({
-  disableClusteringAtZoom: 13  
+  disableClusteringAtZoom: 11  
 }).addTo(map);
 
 // Route line GeoJSON
