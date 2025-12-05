@@ -6,20 +6,12 @@
 */
 const STATUS = document.getElementById('status');
 const SEARCH = document.getElementById('searchBox');
-const ZIP_INPUT = document.getElementById('zipBox');
+//const ZIP_INPUT = document.getElementById('zipBox');
 const RESET = document.getElementById('resetBtn');
 const DOWNLOAD = document.getElementById('downloadBtn');
 const SCREENSHOT = document.getElementById('screenshotBtn');
 const TYPE_FILTERS = document.getElementById('typeFilters');
 const SELECT_ALL = document.getElementById('selectAllBtn');
-
-SELECT_ALL.addEventListener('click', () => {
-  TYPE_FILTERS.querySelectorAll('input[type=checkbox]').forEach(cb => {
-    cb.checked = true;
-  });
-  refreshMarkers();
-});
-
 
 
 
@@ -201,17 +193,26 @@ function downloadJSON(filename, obj) {
 }
 
 function filterRows(rows) {
+  console.log("check if filtered");
   const activeTypes = new Set(
     [...TYPE_FILTERS.querySelectorAll('input[type=checkbox]')]
       .filter(cb => cb.checked)
       .map(cb => cb.dataset.type)
   );
 
+  console.log("activeTypes")
+  console.log(activeTypes)
+
   const query = SEARCH.value.trim().toLowerCase();
-  const zipList = ZIP_INPUT.value.split(',').map(z => z.trim()).filter(Boolean);
+  //const zipList = ZIP_INPUT.value.split(',').map(z => z.trim()).filter(Boolean);
+
+
+  console.log(activeTypes.size)
+  // problem with reset not working
 
   return rows.filter(row => {
-    if (activeTypes.size && !activeTypes.has(row.Type)) return false;
+    if (activeTypes.size >=0 && !activeTypes.has(row.Type)) return false;
+
 
 const searchable = [
   row.Name,
@@ -237,7 +238,7 @@ const searchable = [
     if (query && !searchable.includes(query)) return false;
 
     // 🔹 ZIP filter
-    if (zipList.length && (!row.Zip || !zipList.includes(String(row.Zip)))) return false;
+    //if (zipList.length && (!row.Zip || !zipList.includes(String(row.Zip)))) return false;
 
     return row.latitude && row.longitude;
   });
@@ -398,8 +399,14 @@ const routeLine = {
       [-76.13039250414955, 42.059837655817475],
       [-75.95895379844585, 42.11986115507637],
       [-75.92818274625327, 42.11464397526138],
-      [-75.90192501143054, 42.11473468591885],
-      [-75.92995194218976, 42.11474943413152]
+      [-75.92673382400608, 42.11354075247011],
+      [-75.91263109026185, 42.111459693790245],
+      [-75.90748811000081, 42.11467513021304],
+      [-75.89847537558289, 42.114538687544204],
+      [-75.89782794130892, 42.102895794103254],
+      [-75.8958345129744, 42.099403596112566],
+      [-75.89688660030023, 42.09915708066073],
+      [-75.89716629847779, 42.09949712120231]
     ]
   }
 };
@@ -416,11 +423,33 @@ const routeLine2 = {
   "geometry": {
     "type": "LineString",
     "coordinates": [
-      [-75.8968653770467, 42.09955173758598],
-      [-75.8971019254649, 42.0994732393974],
-      [-75.89694099293258, 42.09906724733798],
-      [-75.89582519404189, 42.099321987757506],
-      [-75.89769201141671, 42.10221162774447],
+      [-76.80510126911796, 42.08992828402145],
+      [-76.78692131499254, 42.090476637548015],
+      [-76.70803071240952, 42.02409941652692],
+      [-76.64966584591532, 42.018488247723106],
+      [-76.61629748996636, 42.00020867577443],
+      [-76.44164507907941, 42.02669362310484],
+      [-76.40180057070435, 42.02126509003903],
+      [-76.30139162377996, 42.08267937523969],
+      [-76.24952042392287, 42.10159914605536],
+      [-76.21171599052128, 42.082026869692854],
+      [-76.16775734923927, 42.087572961145604],
+      [-76.13039250414955, 42.059837655817475],
+      [-76.04514267080738, 42.090362768675725],
+      [-76.04432478734347, 42.087861870515724],
+      [-76.04336819180826, 42.08753020885373],
+      [-76.04448403438332, 42.088485687321835],
+      [-76.04311074344093, 42.0891226427117],
+      [-75.99397267451006, 42.09679745237761],
+      [-75.95912541510302, 42.09507786625565],
+      [-75.93628445579175, 42.08729929108063],
+      [-75.92497070731373, 42.086653425524524],
+      [-75.9100556108509, 42.09113155570007],
+      [-75.90949956125108, 42.0901369235522],
+      [-75.90148512086165, 42.09102067444432],
+      [-75.90165678222314, 42.093751466502056],
+      [-75.89505854811004, 42.09491380881244],
+      [-75.89716139984152, 42.09964257082665]
     ]
   }
 };
@@ -437,32 +466,48 @@ const routeLayer2 = L.geoJSON(routeLine2, { style: routeStyle2 });
 
 
 const toggleRoute86 = document.getElementById("toggleRoute86");
-const toggleTompkins = document.getElementById("toggleTompkins");
+let route86Visible = false;
 
-// I-86 route lines
-toggleRoute86.addEventListener("change", () => {
-  if (toggleRoute86.checked) {
+toggleRoute86.addEventListener("click", () => {
+  route86Visible = !route86Visible;
+
+  if (route86Visible) {
     routeLayer.addTo(map);
+    toggleRoute86.classList.add("active-route");
   } else {
     map.removeLayer(routeLayer);
+    toggleRoute86.classList.remove("active-route");
   }
 });
 
+const toggleTompkins = document.getElementById("toggleTompkins");
+let tompkinsVisible = false; // track visibility
 
-toggleTompkins.addEventListener("change", () => {
-  if (toggleTompkins.checked) {
-    routeLayer2.addTo(map);
+toggleTompkins.addEventListener("click", () => {
+  tompkinsVisible = !tompkinsVisible;
+
+  if (tompkinsVisible) {
+    routeLayer2.addTo(map);            
+    toggleTompkins.classList.add("active-route");
   } else {
     map.removeLayer(routeLayer2);
+    toggleTompkins.classList.remove("active-route");
   }
 });
+
 
 
   // Refresh marker display
   function refreshMarkers() {
     cluster.clearLayers();
-
+    
     const filtered = filterRows(rows);
+
+    if (true) {
+
+    } else {
+
+    }
     const features = [];
 
     for (const row of filtered) {
@@ -513,25 +558,33 @@ toggleTompkins.addEventListener("change", () => {
     }
 
     if (features.length) {
-      const bounds = L.latLngBounds(features.map(f => [f.lat, f.lon]));
-      map.fitBounds(bounds.pad(0.1));
+      //const bounds = L.latLngBounds(features.map(f => [f.lat, f.lon]));
+      //map.fitBounds(bounds.pad(0.1));
       setStatus(`Showing ${features.length} location(s).`);
     } else {
-      map.setView(DEFAULT_COORDS, DEFAULT_ZOOM);
+      //map.setView(DEFAULT_COORDS, DEFAULT_ZOOM);
       setStatus('Select filters to view locations.');
     }
   }
 
   TYPE_FILTERS.addEventListener('change', refreshMarkers);
   SEARCH.addEventListener('input', debounce(refreshMarkers, 250));
-  ZIP_INPUT.addEventListener('input', debounce(refreshMarkers, 300));
+  //ZIP_INPUT.addEventListener('input', debounce(refreshMarkers, 300));
 
   RESET.addEventListener('click', () => {
     SEARCH.value = '';
-    ZIP_INPUT.value = '';
-    TYPE_FILTERS.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+    //ZIP_INPUT.value = '';
+    TYPE_FILTERS.querySelectorAll('input[type=checkbox]').forEach(cb => {cb.checked = false});
     refreshMarkers();
   });
+
+  SELECT_ALL.addEventListener('click', () => {
+  TYPE_FILTERS.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.checked = true;
+  });
+  refreshMarkers();
+});
+
 
   const DOWNLOAD = document.getElementById('downloadBtn');
 

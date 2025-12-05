@@ -78,14 +78,14 @@
     }
 
     aside h3 {
-      margin-top: 1.2rem;
+      margin-top: 2rem;
       margin-bottom: 0.5rem;
       font-size: 1.2rem;
       color: #2b6777;
     }
 
     aside h4 {
-      margin-top: 1rem;
+      margin-top: 2rem;
       margin-bottom: 0rem;
       font-size: 1.2rem;
       color: #2b6777;
@@ -123,3 +123,30 @@
     #typeFilters {
         font-weight: bold;
     }
+
+    .set-btn-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .routes-btn-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.75rem;
+    }
+
+    .route86-color {
+      background-color: #2449d2; 
+    }
+
+    .tompkins-color {
+      background-color: #d33333; 
+    }
+
+    .active-route {
+      filter: brightness(1.8);
+    }
+

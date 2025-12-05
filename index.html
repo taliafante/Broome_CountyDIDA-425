@@ -21,7 +21,8 @@
     <div id="nws-alert-banner" style="display:none; position:fixed; top:10px; left:50%; transform:translateX(-50%); z-index:9999; padding:8px 12px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.2); background:#ffefc8; font-weight:600;"></div>
     <div class="controls">
       <button id="screenshotBtn">Screenshot</button>
-      <button id="weatherBtn"><a href="https://forecast.weather.gov/MapClick.php?lat=42.160225737750224&lon=-75.8196013865951" target="_blank"style="text-decoration: none;">Weather Updates</a></button>
+      <button id="weatherBtn" onClick="window.open('https://forecast.weather.gov/MapClick.php?lat=42.160225737750224&lon=-75.8196013865951','_blank').focus()">Weather</button>
+      <button id="weatherBtn" onClick="window.open('https://511ny.org/region/Southern%20Tier%20Hornell%20Elmira%20Binghamton%20Area','_blank').focus()">Roads</button>
     </div>
     <div id="status"></div>
   </header>
@@ -30,24 +31,26 @@
     <aside id="filters">
       <h3>Search Box</h3>
       <input id="searchBox" type="search" placeholder="Search by name…" />
+      <div class="set-btn-row">
+        <button id="selectAllBtn" title="Select all types">Select All</button>
+        <button id="resetBtn" title="Reset filters/search">Reset</button>
+      </div>
+
       
       <h3>Filter by Type</h3>
       <div id="typeFilters"></div>
       <p class="hint">
-        <button id="selectAllBtn" title="Select all types">Select All</button>
-        <button id="resetBtn" title="Reset filters/search">Reset</button>
       </p>
-      <h4>Filter by zip code</h4>
-      <input type="text" id="zipBox" placeholder="e.g. 13902" />
-      <label class="type-filter-item">
-        <input type="checkbox" id="toggleRoute86">
-        I-86 Route
-      </label>
+      <h4>Routes</h4>
+      <div class="routes-btn-row">
+        <button id="toggleRoute86" class="route-btn route86-color">
+          I-86 Route through Tompkins Bridge
+        </button>
 
-      <label class="type-filter-item">
-        <input type="checkbox" id="toggleTompkins">
-        Tompkins Bridge
-      </label>
+        <button id="toggleTompkins" class="route-btn tompkins-color">
+          Avoid Tompkins Bridge
+        </button>
+</div>
 
     </aside>
 
