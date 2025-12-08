@@ -245,7 +245,6 @@ const searchable = [
 }
 
 
-
 (async function main() {
   setStatus('Loading geocoded data…');
   const rows = await fetchJSON('./assets/data.geocoded.json');
