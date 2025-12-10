@@ -626,4 +626,170 @@ toggleTompkins.addEventListener("click", () => {
 
   map.setView(DEFAULT_COORDS, DEFAULT_ZOOM);
   setStatus('Select filters to view locations.');
+
+  // ========= NEW RADAR CODE
+function setupRadarOverlay(map) {
+
+  // UI elements
+  const btnToggleRadar = document.getElementById("toggleRadar");
+  const timeline = document.getElementById("timeline");
+  const track = document.getElementById("timeline-track");
+  const timestampBox = document.getElementById("timestamp");
+
+  // Internal state
+  let radarFrames = [];
+  let radarTimes = [];
+  let radarLayers = [];
+  let radarIndex = 0;
+  let radarActive = false;
+  let animationFrame = null;
+
+  /* --------------------------------------------------------------------------
+     Build timeline ticks
+  -------------------------------------------------------------------------- */
+  function buildTimeline() {
+    track.innerHTML = "";
+    if (!radarFrames.length) return;
+
+    const n = radarFrames.length;
+    for (let i = 0; i < n; i++) {
+      const tick = document.createElement("div");
+      tick.className = "timeline-tick";
+      tick.style.left = `${(i / (n - 1)) * 100}%`;
+      track.appendChild(tick);
+    }
+
+    const marker = document.createElement("div");
+    marker.className = "timeline-marker";
+    marker.id = "timeline-marker";
+    marker.style.left = "0%";
+    track.appendChild(marker);
+  }
+
+  function updateTimelineMarker(i) {
+    const marker = document.getElementById("timeline-marker");
+    if (!marker || radarFrames.length <= 1) return;
+    marker.style.left = `${(i / (radarFrames.length - 1)) * 100}%`;
+  }
+
+  /* --------------------------------------------------------------------------
+     Timestamp box update
+  -------------------------------------------------------------------------- */
+  function updateTimestamp(unix) {
+    const d = new Date(unix * 1000);
+    timestampBox.textContent = d.toISOString().replace("T", " ").split(".")[0] + " UTC";
+  }
+
+  /* --------------------------------------------------------------------------
+     Load frames from RainViewer
+  -------------------------------------------------------------------------- */
+  async function loadRadarFrames() {
+    try {
+      const res = await fetch("https://api.rainviewer.com/public/weather-maps.json");
+      const data = await res.json();
+      radarFrames = data.radar.past.map(f => f.path);
+      radarTimes = data.radar.past.map(f => f.time);
+
+      radarLayers.forEach(l => map.removeLayer(l));
+      radarLayers = [];
+
+      radarFrames.forEach((path, i) => {
+        const layer = L.tileLayer(
+          `https://tilecache.rainviewer.com${path}/256/{z}/{x}/{y}/2/1_1.png`,
+          { opacity: i === 0 ? 0.6 : 0, zIndex: 50 + i }
+        );
+        if (radarActive) layer.addTo(map);
+        radarLayers.push(layer);
+      });
+
+      radarIndex = 0;
+      buildTimeline();
+
+      if (radarActive) animateRadar();
+    } catch (err) {
+      console.error("Radar load error:", err);
+    }
+  }
+
+  /* --------------------------------------------------------------------------
+     Crossfade animation
+  -------------------------------------------------------------------------- */
+  function animateRadar() {
+    if (!radarLayers.length || !radarActive) return;
+
+    const current = radarLayers[radarIndex];
+    const nextIndex = (radarIndex + 1) % radarLayers.length;
+    const next = radarLayers[nextIndex];
+
+    let t = 0;
+    const duration = 2000;
+    const start = performance.now();
+
+    updateTimestamp(radarTimes[nextIndex]);
+    updateTimelineMarker(nextIndex);
+
+    function step(now) {
+      t = (now - start) / duration;
+      if (t > 1) t = 1;
+
+      // cosine ease
+      const eased = 0.5 - 0.5 * Math.cos(Math.PI * t);
+
+      current.setOpacity(0.6 * (1 - eased));
+      next.setOpacity(0.6 * eased);
+
+      if (t < 1) {
+        animationFrame = requestAnimationFrame(step);
+      } else {
+        radarIndex = nextIndex;
+        animationFrame = requestAnimationFrame(() => animateRadar());
+      }
+    }
+
+    animationFrame = requestAnimationFrame(step);
+  }
+
+  /* --------------------------------------------------------------------------
+     Toggle Radar On/Off
+  -------------------------------------------------------------------------- */
+  btnToggleRadar.addEventListener("click", () => {
+    radarActive = !radarActive;
+
+    if (radarActive) {
+      btnToggleRadar.textContent = "🌧️ Radar On";
+      btnToggleRadar.classList.add("active");
+
+      timeline.classList.add("visible");
+      timestampBox.classList.add("visible");
+
+      radarLayers.forEach(l => l.addTo(map));
+      animateRadar();
+    } else {
+      btnToggleRadar.textContent = "🌧️ Radar Off";
+      btnToggleRadar.classList.remove("active");
+
+      timeline.classList.remove("visible");
+      timestampBox.classList.remove("visible");
+
+      if (animationFrame) cancelAnimationFrame(animationFrame);
+      radarLayers.forEach(l => map.removeLayer(l));
+    }
+  });
+
+  /* --------------------------------------------------------------------------
+     Expose only what is necessary
+  -------------------------------------------------------------------------- */
+  loadRadarFrames(); // initial load
+
+  return {
+    loadRadarFrames,   // allow periodic refresh
+  };
+}
+
+
+const radar = setupRadarOverlay(map);
+
+// Refresh frames every 10 minutes if you want:
+setInterval(() => radar.loadRadarFrames(), 10 * 60 * 1000);
+// ========= NEW RADAR CODE
 })();
